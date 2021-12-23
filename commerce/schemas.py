@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 User=get_user_model()
 
 
+
 class CategoryOut(Schema):
     id: UUID4
     name: str
@@ -41,7 +42,11 @@ class notificationsOut(Schema):
     image: str
     time: datetime.time
 
-    ###########################################
+############################################
+
+class OpinionUser(Schema):
+    email:str
+
 
 class Service_opinionIn(Schema):
     id: UUID4
@@ -54,7 +59,9 @@ class Service_opinionIn(Schema):
 class Service_opinionOUT(Schema):
     id: UUID4
     # rating: float
+    user: OpinionUser
     description: str
+
     #User.username
     time: datetime.time
 
@@ -100,9 +107,9 @@ class ServiceOut(Schema):
     name: str
     description: str
     time: datetime.time
-    Service_images:list[ImageOut_S]
-    ServiceOpinions:list[Service_opinionOUT]
-    background_image:str
+    Service_images: list[ImageOut_S]
+    ServiceOpinions: list[Service_opinionOUT]
+    background_image: str
     price: float
     label: LabelOut
 
@@ -145,8 +152,10 @@ class Center_opinionIn(Schema):
 
 class Center_opinionOUT(Schema):
     id: UUID4
+    user: OpinionUser
     # rating: float
     description: str
+
     time: datetime.time
 
 
@@ -174,9 +183,6 @@ class Center(Schema):
     close_days: datetime.date
     open_time: datetime.time
     close_time: datetime.time
-
-
-
 
 
 class CenterOut(Schema):
@@ -280,48 +286,4 @@ class update_Reservation(Schema):
 ############################
 
 
-class MerchantOut(Schema):
-    id: UUID4
-    name: str
-    created: str
-    updated: str
-
-class VendorOut(Schema):
-    id: UUID4
-    name: str
-    image: str
-
-
-class ProductOut(Schema):
-    id: UUID4
-    is_featured: bool
-    name: str
-    description: str
-    qty: int
-    price: int
-    discounted_price: int
-    category: CategoryOut
-    vendor: VendorOut
-    merchant: MerchantOut
-    label: LabelOut
-    created: str
-    updated: str
-
-class ProductCreate(Schema):
-    is_featured: bool
-    name: str
-    description: str
-    qty: int
-    cost: int
-    price: int
-    discounted_price: int
-    category_id: UUID4
-    vendor_id: UUID4
-    merchant_id: UUID4
-    label_id: UUID4
-
-
-class AddToCartPayload(Schema):
-    product_id: UUID4
-    qty: int
 

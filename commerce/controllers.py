@@ -12,10 +12,8 @@ from config.utils.schemas import MessageOut
 
 User = get_user_model()
 
-#commerce_controller = Router(tags=['products'])
-order_controller = Router(tags=['order'])
 
-commerce_controller = {'products': Router(tags=['products']),'notifications': Router(tags=['notifications']), 'Service': Router(tags=['Service']),
+commerce_controller = {'notifications': Router(tags=['notifications']), 'Service': Router(tags=['Service']),
                      'Center': Router(tags=['Center']),'Advertising' : Router(tags=['Advertising']),
                      'Center_images' : Router(tags=['Center_image']),'News' : Router(tags=['News']), 'Service_images' : Router(tags=['Service_image']),
                        'Center_opinions' : Router(tags=['Center_opinion']),'Service_opinions' : Router(tags=['Service_opinion']),'Reservation' : Router(tags=['Reservation']),
@@ -486,85 +484,3 @@ def delete_reservation(request, id: UUID4):
 
 
 
-
-
-
-
-
-'''
-/api/resource/{id}/
-
-/api/resource?id=&name=&age=
-
-{
-    JSON
-}
-'''
-
-@commerce_controller['products'].get('products/{id}', response={
-    200: ProductOut
-})
-def retrieve_product(request, id):
-    return get_object_or_404(Product, id=id)
-
-
-@commerce_controller['products'].post('products', response={
-    201: ProductOut,
-    400: MessageOut
-})
-def create_product(request, payload: ProductCreate):
-    try:
-        product = Product.objects.create(**payload.dict(), is_active=True)
-    except:
-        return 400, {'detail': 'something wrong happened!'}
-
-    return 201, product
-
-
-
-
-# @commerce_controller.put('product/{id}')
-# def update_product(request):
-#     pass
-#
-#
-# @commerce_controller.delete('product/{id}')
-# def delete_product(request):
-#     pass
-
-
-
-@order_controller.post('add-to-cart', response=MessageOut)
-def add_to_cart(request, payload: AddToCartPayload):
-    payload_validated = payload.copy()
-    if payload.qty < 1:
-        payload_validated.qty = 1
-
-    try:
-        item = Item.objects.get(product_id=payload.product_id)
-    except Item.DoesNotExist:
-        Item.objects.create(product_id=payload.product_id, user=User.objects.first(), item_qty=payload_validated.qty,
-                            ordered=False)
-        return 200, {'detail': 'item added to cart successfully!'}
-
-    item.item_qty += payload_validated.qty
-    item.save()
-    return 200, {'detail': 'item qty updated successfully!'}
-
-
-@order_controller.post('increase-item/{item_id}', response=MessageOut)
-def increase_item_qty(request, item_id: UUID4):
-    item = get_object_or_404(Item, id=item_id, user=User.objects.first())
-    item.item_qty += 1
-    item.save()
-
-    return 200, {'detail': 'Item qty increased successfully!'}
-
-
-'''
-* Decrease items qty
-* Delete item from cart
-* Create order
-* Checkout
-
-'''

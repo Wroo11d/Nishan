@@ -1,27 +1,22 @@
 from django.contrib import admin
 
 from commerce.models import (
-    Product,
-    Category,
-    Label, Vendor, Merchant, Item, service,center,notification,advertising, Center_image,Service_image,ServiceOpinion,CenterOpinion,reservation,ProductImage
+
+    Label,  service,center,notification,advertising, Center_image,Service_image,ServiceOpinion,CenterOpinion,reservation,
 
 )
-class InlineProductImage(admin.TabularInline):
-    model = ProductImage
+"""class InlineProductImage(admin.TabularInline):
+    model = ProductImage"""
 
 
-class ProductAdmin(admin.ModelAdmin):
+"""class ProductAdmin(admin.ModelAdmin):
     inlines = [InlineProductImage,]
     list_display = ('id', 'name', 'qty', 'description', 'cost', 'price', 'discounted_price')
     list_filter = ('category', 'label', 'merchant', 'vendor')
     search_fields = ('name', 'qty', 'description', 'cost', 'price', 'discounted_price', 'merchant__name')
+"""
 
-
-admin.site.register(Product)
 admin.site.register(Label)
-admin.site.register(Category)
-admin.site.register(Vendor)
-admin.site.register(Merchant)
 admin.site.register(service)
 admin.site.register(center)
 admin.site.register(notification)
@@ -30,8 +25,6 @@ admin.site.register(Service_image)
 admin.site.register(Center_image)
 admin.site.register(reservation)
 
-class ItemAdmin(admin.ModelAdmin):
-    list_display = ('id', 'product', 'item_qty')
 
 class Service_opinionAdmin(admin.ModelAdmin):
     list_display = ('id','description','time')
@@ -39,6 +32,5 @@ class Service_opinionAdmin(admin.ModelAdmin):
 class Center_opinionAdmin(admin.ModelAdmin):
     list_display = ('id', 'description', 'time')
 
-admin.site.register(Item, ItemAdmin)
 admin.site.register(ServiceOpinion,Center_opinionAdmin)
 admin.site.register(CenterOpinion,Center_opinionAdmin)
