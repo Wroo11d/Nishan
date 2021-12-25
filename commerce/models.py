@@ -39,10 +39,12 @@ class service(Entity):
 
 class Service_image(Entity):
     image = models.ImageField('image', upload_to='service/')
-    service = models.ForeignKey('service', related_name='Service_images', null=True, blank=True,on_delete=models.CASCADE)
+    service = models.ForeignKey('service',verbose_name='service', related_name='Service_images', null=True, blank=True,on_delete=models.CASCADE)
 
     """def __str__(self):
         return str(self.service.images)"""
+
+
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None, *args, **kwargs):
@@ -77,11 +79,11 @@ class center(Entity):
         return self.name
 
 class Center_image(Entity):
-    image = models.ImageField('image', upload_to='service/')
-    center = models.ForeignKey('center', related_name='Center_images', null=True, blank=True,on_delete=models.CASCADE)
+    image = models.ImageField('image', upload_to='center/')
+    center = models.ForeignKey('center', verbose_name='center', related_name='Center_images', null=True, blank=True,on_delete=models.CASCADE)
 
     """def __str__(self):
-        return str(self.service.images)"""
+        return self.center.images"""
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None, *args, **kwargs):
@@ -98,8 +100,7 @@ class Center_image(Entity):
 class advertising(Entity):
     name = models.CharField('name',null=True, blank=True, max_length=255)
     description= models.TextField('description',  blank=True, null=True)
-    #service = models.ForeignKey('service', related_name='advertisings', on_delete=models.CASCADE)
-    #center = models.ForeignKey('center', related_name='advertisings', on_delete=models.CASCADE)
+    center = models.ForeignKey('center', related_name='advertisings', on_delete=models.CASCADE)
     image = models.ImageField('image', upload_to='advertisings/')
 
     def __str__(self):
@@ -116,7 +117,6 @@ class news(Entity):
 
 class ServiceOpinion(Entity):
     user = models.ForeignKey(User, verbose_name='user', related_name='ServiceOpinions', on_delete=models.CASCADE)
-
     description = models.TextField('description',  blank=True, null=True)
     service = models.ForeignKey('service', related_name='ServiceOpinions', on_delete=models.CASCADE)
     time = models.TimeField('time',auto_now = False, auto_now_add = False, null=True, blank=True)
@@ -135,13 +135,14 @@ class CenterOpinion(Entity):
         return str(self.user)"""
 
 class reservation(Entity):
+    user = models.ForeignKey(User, verbose_name='user', related_name='reservations', on_delete=models.CASCADE)
+    service = models.ForeignKey('service', related_name='reservations', on_delete=models.CASCADE)
     title = models.CharField('name',null=True, blank=True, max_length=255)
     time = models.TimeField('time',auto_now = False, auto_now_add = False,null=True, blank=True)
-    #users = models.ForeignKey('user', related_name='reservations', on_delete=models.CASCADE)
     is_active = models.BooleanField('is active')
 
-    def __str__(self):
-        return self.title
+    """def __str__(self):
+        return self.title"""
 
 
 

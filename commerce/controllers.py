@@ -152,7 +152,7 @@ def list_images(request):
     201: ImageOut_S,
     400: MessageOut
 })
-def create_image(request, payload: ImageOut_S):
+def create_image(request, payload: Image_S):
     try:
         img = Service_image.objects.create(**payload.dict(), )
     except:
@@ -160,18 +160,20 @@ def create_image(request, payload: ImageOut_S):
 
     return 201, img
 
-@commerce_controller['Service_images'].put('Service_image/{id}', response={200: update_Images_S})
-def update_image(request, id: UUID4, payload: update_Images_S):
+@commerce_controller['Service_images'].put('Service_image/{id}', response={200: ImageOut_S})
+def update_image(request, id: UUID4, payload: Image_S):
     updateimg = get_object_or_404(Service_image, id=id)
     for attr, value in payload.dict().items():
         setattr(updateimg, attr, value)
     updateimg.save()
+    return updateimg
 
 
 @commerce_controller['Service_images'].delete('Service_image/{id}')
 def delete_Images(request, id: UUID4):
     img = get_object_or_404(Service_image, id=id)
     img.delete()
+    return 200, {'detail': 'deleted'}
 
 ################################################33
 
@@ -184,29 +186,40 @@ def list_images(request):
 
 
 @commerce_controller['Center_images'].post('Center_image', response={
-    201: ImageOut_C,
+    200: ImageOut_C,
     400: MessageOut
 })
-def create_image(request, payload: ImageOut_C):
+def create_image(request, payload: Image_C):
     try:
         img = Center_image.objects.create(**payload.dict(), )
     except:
         return 400, {'detail': 'something wrong happened!'}
 
-    return 201, img
+    return 200, img
 
-@commerce_controller['Center_images'].put('Center_image/{id}', response={200: update_Images_C})
-def update_image(request, id: UUID4, payload: update_Images_C):
+
+
+@commerce_controller['Center_images'].get('Center_image/{id}', response={
+    200: ImageOut_C
+})
+def retrieve_service(request, id):
+    return get_object_or_404(Center_image, id=id)
+
+@commerce_controller['Center_images'].put('Center_image/{id}', response={200: ImageOut_C})
+def update_image(request, id: UUID4, payload: Image_C):
     updateimg = get_object_or_404(Center_image, id=id)
     for attr, value in payload.dict().items():
         setattr(updateimg, attr, value)
     updateimg.save()
+    return updateimg
 
 
 @commerce_controller['Center_images'].delete('Center_image/{id}')
 def delete_Images(request, id: UUID4):
     img = get_object_or_404(Center_image, id=id)
     img.delete()
+    return 200, {'detail': 'deleted'}
+
 
 ##########################################################
 
@@ -286,7 +299,7 @@ def search_center(request, q: str = None,):
 
 
 @commerce_controller['Advertising'].get('advertising', response={
-    200: List[Advertising], })
+    200: List[AdvertisingOut], })
 def list_ads(request):
     ads = advertising.objects.all()
     return ads
@@ -296,7 +309,7 @@ def list_ads(request):
     201: AdvertisingOut,
     400: MessageOut
 })
-def create_ads(request, payload: update_Advertising):
+def create_ads(request, payload: Advertising):
     try:
         ads = advertising.objects.create(**payload.dict(), )
     except:
@@ -318,12 +331,13 @@ def update_ads(request, id: UUID4, payload: update_Advertising):
     for attr, value in payload.dict().items():
         setattr(updateads, attr, value)
     updateads.save()
-
+    return  updateads
 
 @commerce_controller['Advertising'].delete('Advertising/{id}')
 def delete_ads(request, id: UUID4):
     ads = get_object_or_404(advertising, id=id)
     ads.delete()
+    return 200, {'detail': 'deleted'}
 
 
 
@@ -339,7 +353,7 @@ def list_news(request):
 
 
 @commerce_controller['News'].post('news', response={
-    201: NewsOut,
+    200: NewsOut,
     400: MessageOut
 })
 def create_news(request, payload: update_News):
@@ -348,7 +362,7 @@ def create_news(request, payload: update_News):
     except:
         return 400, {'detail': 'something wrong happened!'}
 
-    return 201, nws
+    return 200, nws
 
 
 @commerce_controller['News'].get('news/{id}', response={
@@ -365,12 +379,14 @@ def update_news(request, id: UUID4, payload: update_News):
     for attr, value in payload.dict().items():
         setattr(updatenws, attr, value)
     updatenws.save()
+    return updatenws
 
 
 @commerce_controller['News'].delete('news/{id}')
 def delete_news(request, id: UUID4):
     nws = get_object_or_404(news, id=id)
     nws.delete()
+    return 200, {'detail': 'deleted'}
 ##################################
 
 @commerce_controller['Center_opinions'].get('Center_opinion', response={
@@ -381,16 +397,16 @@ def list_opinion(request):
 
 
 @commerce_controller['Center_opinions'].post('Center_opinion', response={
-    201: Center_opinionOUT,
+    200: Center_opinionIn,
     400: MessageOut
 })
-def create_opinion(request, payload: Update_Center_opinion):
+def create_opinion(request, payload: Center_opinionOUT):
     try:
         opn = CenterOpinion.objects.create(**payload.dict(), )
     except:
         return 400, {'detail': 'something wrong happened!'}
 
-    return 201, opn
+    return 200, opn
 
 
 @commerce_controller['Center_opinions'].get('Center_opinion/{id}', response={
@@ -401,12 +417,30 @@ def retrieve_opinion(request, id):
     return get_object_or_404(CenterOpinion, id=id)
 
 
+@commerce_controller['Center_opinions'].put('Center_opinion/{id}', response={200: Center_opinionIn})
+def update_opctr(request, id: UUID4, payload: Center_opinionOUT):
+    updateopctr = get_object_or_404(CenterOpinion, id=id)
+    for attr, value in payload.dict().items():
+        setattr(updateopctr, attr, value)
+    updateopctr.save()
+    return updateopctr
+
+@commerce_controller['Center_opinions'].delete('Center_opinion/{id}')
+def delete_opctr(request, id: UUID4):
+    opctr = get_object_or_404(CenterOpinion, id=id)
+    opctr.delete()
+    return 200, {'detail': 'deleted'}
+
+
 
 @commerce_controller['Center_opinions'].get('Center_opinion/')
 def rate(request, r: float):
     while r>=0.0 and r<=5.0:
         return {"Rating": r}
     else: return "rating from 0 to 5"
+
+
+###############################################
 
 
 ##################################
@@ -419,24 +453,41 @@ def list_opinion(request):
 
 
 @commerce_controller['Service_opinions'].post('Service_opinion', response={
-    201: Service_opinionOUT,
+    200: Service_opinionIn,
     400: MessageOut
 })
-def create_opinion(request, payload: Update_Service_opinion):
+def create_opinion(request, payload: Service_opinionOUT):
     try:
         opn = ServiceOpinion.objects.create(**payload.dict(), )
     except:
         return 400, {'detail': 'something wrong happened!'}
 
-    return 201, opn
+    return 200, opn
 
 
 @commerce_controller['Service_opinions'].get('Service_opinion/{id}', response={
-    200: Service_opinionOUT,
+    200: Service_opinionIn,
     400: MessageOut
 })
 def retrieve_opinion(request, id):
     return get_object_or_404(ServiceOpinion, id=id)
+
+
+
+@commerce_controller['Service_opinions'].put('Service_opinion/{id}', response={200: Service_opinionIn})
+def update_service_opinion(request, id: UUID4, payload: Service_opinionOUT):
+    updateopsrv = get_object_or_404(ServiceOpinion, id=id)
+    for attr, value in payload.dict().items():
+        setattr(updateopsrv, attr, value)
+    updateopsrv.save()
+    return updateopsrv
+
+@commerce_controller['Service_opinions'].delete('Service_opinion/{id}')
+def delete_service_opinion(request, id: UUID4):
+    opsrv = get_object_or_404(ServiceOpinion, id=id)
+    opsrv.delete()
+    return 200, {'detail': 'deleted'}
+
 
 
 
@@ -457,28 +508,31 @@ def list_reservation(request):
     return rsv
 
 @commerce_controller['Reservation'].post('reservation', response={
-    201: ReservationOut,
+    200: Reservation,
     400: MessageOut
 })
-def create_reservation(request, payload: update_Reservation):
+def create_reservation(request, payload: ReservationOut):
     try:
         rsv = reservation.objects.create(**payload.dict(), )
     except:
         return 400, {'detail': 'something wrong happened!'}
 
-    return 201, rsv
+    return 200, rsv
 
-@commerce_controller['Reservation'].put('reservation/{id}', response={200: update_Reservation})
-def update_reservation(request, id: UUID4, payload: update_Reservation):
-    updatersv = get_object_or_404(news, id=id)
+@commerce_controller['Reservation'].put('reservation/{id}', response={200: Reservation})
+def update_reservation(request, id: UUID4, payload: ReservationOut):
+    updatersv = get_object_or_404(reservation, id=id)
     for attr, value in payload.dict().items():
         setattr(updatersv, attr, value)
     updatersv.save()
+    return updatersv
+
 
 @commerce_controller['Reservation'].delete('reservation/{id}')
 def delete_reservation(request, id: UUID4):
     rsv = get_object_or_404(reservation, id=id)
     rsv.delete()
+    return 200, {'detail': 'deleted'}
 
 
 

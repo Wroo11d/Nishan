@@ -45,24 +45,23 @@ class notificationsOut(Schema):
 ############################################
 
 class OpinionUser(Schema):
+    id:UUID4
     email:str
 
 
 class Service_opinionIn(Schema):
     id: UUID4
+    user: OpinionUser
     # rating: float
     description: str
-    #User.username
     time: datetime.time
 
 
 class Service_opinionOUT(Schema):
-    id: UUID4
     # rating: float
-    user: OpinionUser
+    user_id: UUID4
+    service_id:UUID4
     description: str
-
-    #User.username
     time: datetime.time
 
 
@@ -77,9 +76,8 @@ class Update_Service_opinion(Schema):
 
 
 class Image_S(Schema):
-
-    id:UUID4
     image:str
+    service_id:UUID4
 
 
 class ImageOut_S(Schema):
@@ -92,11 +90,11 @@ class update_Images_S(Schema):
 
 #########################################
 class Services(Schema):
-    id: UUID4
+    #id: UUID4
     name: str
     description: str
     time: datetime.time
-    service_image:str
+    background_image:str
     price: float
     label_id:UUID4
 
@@ -104,22 +102,22 @@ class Services(Schema):
 
 class ServiceOut(Schema):
     id: UUID4
+    label: LabelOut
+    background_image: str
     name: str
     description: str
     time: datetime.time
     Service_images: list[ImageOut_S]
-    ServiceOpinions: list[Service_opinionOUT]
-    background_image: str
     price: float
-    label: LabelOut
+    ServiceOpinions: list[Service_opinionOUT]
 
 
 class update_Services(Schema):
-    id: UUID4
+    #id: UUID4
     name: str
     description: str
     time: datetime.time
-    service_image: str
+    background_image: str
     price: float
 
 
@@ -127,13 +125,14 @@ class update_Services(Schema):
 
 
 class Image_C(Schema):
-    id:UUID4
     image:str
+    center_id:UUID4
 
 
 class ImageOut_C(Schema):
-    id: UUID4
+    id:UUID4
     image:str
+
 
 class update_Images_C(Schema):
     image:str
@@ -146,17 +145,17 @@ class update_Images_C(Schema):
 class Center_opinionIn(Schema):
     id: UUID4
     # rating: float
+    user: OpinionUser
     description: str
     time: datetime.time
 
 
 class Center_opinionOUT(Schema):
-    id: UUID4
-    user: OpinionUser
-    # rating: float
+    #id: UUID4
+    user_id:UUID4
     description: str
-
     time: datetime.time
+    center_id:UUID4
 
 
 class Update_Center_opinion(Schema):
@@ -174,7 +173,7 @@ class Update_Center_opinion(Schema):
 ###################################
 
 class Center(Schema):
-    id: UUID4
+    #id: UUID4
     name: str
     description: str
     location: str
@@ -192,7 +191,7 @@ class CenterOut(Schema):
     location: str
     services: list[ServiceOut]
     Center_images: list[ImageOut_C]
-    CenterOpinions:list[Center_opinionOUT]
+    CenterOpinions:list[Center_opinionIn]
     image: str
     open_time:  datetime.time
     close_time: datetime.time
@@ -214,31 +213,36 @@ class update_Center(Schema):
 ##################################################
 
 class Advertising(Schema):
-    id: UUID4
-    name: str
+    #id: UUID4
+    title: str
     description: str
-    center:CenterOut
+    image: str
+    center_id: UUID4
+
+
 
 
 
 
 class AdvertisingOut(Schema):
     id: UUID4
-    name: str
+    title: str
     description: str
     image: str
+    center: CenterOut
 
 
 class update_Advertising(Schema):
-    name: str
-    description: str
     image: str
-    center_id: UUID4
+    title: str
+    description: str
+
 
 
 ####################################
 class News(Schema):
     id: UUID4
+    image: str
     title: str
     description: str
     # time: str
@@ -246,9 +250,10 @@ class News(Schema):
 
 class NewsOut(Schema):
     id: UUID4
+    image: str
     title: str
     description: str
-    image: str
+
     # time: str
 
 
@@ -259,10 +264,32 @@ class update_News(Schema):
 
 
 
-############################3
+############################
+
+"""
+class Center_opinionIn(Schema):
+    id: UUID4
+    # rating: float
+    user: OpinionUser
+    description: str
+    time: datetime.time
+
+
+class Center_opinionOUT(Schema):
+    #id: UUID4
+    user_id:UUID4
+    description: str
+    time: datetime.time
+    center_id:UUID4"""
+
+
+
+
 
 class Reservation(Schema):
     id: UUID4
+    user: OpinionUser
+    service: ServiceOut
     title: str
     time: datetime.time
     is_active: bool
@@ -270,7 +297,8 @@ class Reservation(Schema):
 
 
 class ReservationOut(Schema):
-    id: UUID4
+    user_id:UUID4
+    service_id: UUID4
     title: str
     time: datetime.time
     is_active: bool

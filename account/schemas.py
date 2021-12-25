@@ -12,6 +12,7 @@ class AccountCreate(Schema):
     password2: str = Field(min_length=8)
 
 
+
 class AccountOut(Schema):
     id: UUID4
     first_name: str
@@ -33,6 +34,8 @@ class AuthOut(Schema):
 class SigninSchema(Schema):
     email: EmailStr
     password: str
+
+
 
 
 class AccountUpdate(Schema):
