@@ -50,15 +50,16 @@ class OpinionUser(Schema):
 
 
 class Service_opinionIn(Schema):
-    id: UUID4
+    # id: UUID4
     user: OpinionUser
-    # rating: float
+    rating: float
     description: str
     time: datetime.time
 
 
 class Service_opinionOUT(Schema):
-    # rating: float
+    id :UUID4
+    rating: float
     user_id: UUID4
     service_id:UUID4
     description: str

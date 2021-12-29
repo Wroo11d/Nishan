@@ -30,6 +30,7 @@ class service(Entity):
     time = models.TimeField('time',auto_now = False, auto_now_add = False, null=True, blank=True, max_length=255)
     center=models.ForeignKey('center',related_name='services',null=True, blank=True,on_delete=models.CASCADE)
     price = models.DecimalField('price',max_digits=10, decimal_places=2)
+
     background_image = models.ImageField('background_image', upload_to='service/')
     label = models.ForeignKey('Label', related_name='services', null=True, blank=True,
                               on_delete=models.CASCADE)
@@ -99,7 +100,7 @@ class Center_image(Entity):
 
 class advertising(Entity):
     name = models.CharField('name',null=True, blank=True, max_length=255)
-    description= models.TextField('description',  blank=True, null=True)
+    description = models.TextField('description',  blank=True, null=True)
     center = models.ForeignKey('center', related_name='advertisings', on_delete=models.CASCADE)
     image = models.ImageField('image', upload_to='advertisings/')
 
@@ -118,6 +119,7 @@ class news(Entity):
 class ServiceOpinion(Entity):
     user = models.ForeignKey(User, verbose_name='user', related_name='ServiceOpinions', on_delete=models.CASCADE)
     description = models.TextField('description',  blank=True, null=True)
+    rating = models.DecimalField('rating',max_digits=1, decimal_places=0)
     service = models.ForeignKey('service', related_name='ServiceOpinions', on_delete=models.CASCADE)
     time = models.TimeField('time',auto_now = False, auto_now_add = False, null=True, blank=True)
 

@@ -134,6 +134,18 @@ def search_services(request, q: str = None):
         )
     return srv
 
+@commerce_controller['Service'].get('filter', response={
+    200:List[ServiceOut],
+    400:MessageOut})
+def filter_service(request, q: str = None):
+    srv = service.objects.all()
+    if q:
+        srv = srv.filter(
+            Q(rating_icontains=q)
+
+        )
+    return srv
+
 
 
 
