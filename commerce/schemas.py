@@ -305,8 +305,6 @@ class Center_opinionOUT(Schema):
 
 class Reservation(Schema):
     id: UUID4
-    user: OpinionUser
-    service: ServiceOut
     title: str
     time: datetime.time
     is_active: bool
@@ -314,8 +312,8 @@ class Reservation(Schema):
 
 
 class ReservationOut(Schema):
-    user_id:UUID4
-    service_id: UUID4
+    #users:UUID4
+    id: UUID4
     title: str
     time: datetime.time
     is_active: bool
@@ -323,6 +321,7 @@ class ReservationOut(Schema):
 
 
 class update_Reservation(Schema):
+    users:UUID4
     title: str
     time: datetime.time
     is_active: bool
