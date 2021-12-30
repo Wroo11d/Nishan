@@ -17,6 +17,7 @@ from commerce.models import (
 """
 
 admin.site.register(Label)
+
 admin.site.register(service)
 admin.site.register(center)
 admin.site.register(notification)

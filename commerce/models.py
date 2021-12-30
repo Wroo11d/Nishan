@@ -25,12 +25,15 @@ class notification(Entity):
 
 
 class service(Entity):
-    name = models.CharField('name',null=True, blank=True, max_length=255)
-    description= models.TextField('description',  blank=True, null=True)
-    time = models.TimeField('time',auto_now = False, auto_now_add = False, null=True, blank=True, max_length=255)
+    name = models.CharField('name', max_length=255)
+    description= models.TextField('description',  )
+    time = models.TimeField('time',auto_now = False, auto_now_add = True, max_length=255)
     center=models.ForeignKey('center',related_name='services',null=True, blank=True,on_delete=models.CASCADE)
     price = models.DecimalField('price',max_digits=10, decimal_places=2)
-
+    latitude = models.CharField('latitude', max_length=255)
+    longitude = models.CharField('longitude', max_length=255)
+    location = models.CharField('location', max_length=255)
+    is_feature = models.BooleanField('is feature')
     background_image = models.ImageField('background_image', upload_to='service/')
     label = models.ForeignKey('Label', related_name='services', null=True, blank=True,
                               on_delete=models.CASCADE)
@@ -99,13 +102,13 @@ class Center_image(Entity):
 
 
 class advertising(Entity):
-    name = models.CharField('name',null=True, blank=True, max_length=255)
+    title = models.CharField('title',null=True, blank=True, max_length=255)
     description = models.TextField('description',  blank=True, null=True)
-    center = models.ForeignKey('center', related_name='advertisings', on_delete=models.CASCADE)
+    # center = models.ForeignKey('center', related_name='advertisings', on_delete=models.CASCADE)
     image = models.ImageField('image', upload_to='advertisings/')
 
     def __str__(self):
-        return self.name
+        return self.title
 
 class news(Entity):
     title = models.CharField('name',null=True, blank=True, max_length=255)
@@ -145,8 +148,6 @@ class reservation(Entity):
 
     """def __str__(self):
         return self.title"""
-
-
 
 
 class Label(Entity):

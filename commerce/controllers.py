@@ -12,20 +12,25 @@ from config.utils.schemas import MessageOut
 
 User = get_user_model()
 
+commerce_controller = {
 
-commerce_controller = {'notifications': Router(tags=['notifications']), 'Service': Router(tags=['Service']),
-                     'Center': Router(tags=['Center']),'Advertising' : Router(tags=['Advertising']),
-                     'Center_images' : Router(tags=['Center_image']),'News' : Router(tags=['News']), 'Service_images' : Router(tags=['Service_image']),
-                       'Center_opinions' : Router(tags=['Center_opinion']),'Service_opinions' : Router(tags=['Service_opinion']),'Reservation' : Router(tags=['Reservation']),
-                       }
+    'notifications': Router(tags=['notifications']), 'Service': Router(tags=['Service']),
 
+
+    'Center': Router(tags=['Center']), 'Advertising': Router(tags=['Advertising']),
+    'Center_images': Router(tags=['Center_image']), 'News': Router(tags=['News']),
+    'Service_images': Router(tags=['Service_image']),
+    'Center_opinions': Router(tags=['Center_opinion']), 'Service_opinions': Router(tags=['Service_opinion']),
+    'Reservation': Router(tags=['Reservation']),
+}
 
 
 @commerce_controller['notifications'].get('notifications', response={
     200: List[notifications], })
-def list_notifications(request, title: str = None,sender: str = None, discription: str = None):
-     notifications = notification.objects.all()
-     return notifications
+def list_notifications(request, title: str = None, sender: str = None, discription: str = None):
+    notifications = notification.objects.all()
+    return notifications
+
 
 @commerce_controller['notifications'].get('notifications/{id}', response={
     200: notifications
@@ -80,7 +85,7 @@ def delete_notification(request, id: UUID4):
 ###################################################
 
 @commerce_controller['Service'].get('Services', response={
-    200:List[ServiceOut], })
+    200: List[ServiceOut], })
 def list_services(request):
     srv = service.objects.all()
     return srv
@@ -123,8 +128,8 @@ def delete_service(request, id: UUID4):
 
 
 @commerce_controller['Service'].get('search', response={
-    200:List[ServiceOut],
-    400:MessageOut})
+    200: List[ServiceOut],
+    400: MessageOut})
 def search_services(request, q: str = None):
     srv = service.objects.all()
     if q:
@@ -134,9 +139,10 @@ def search_services(request, q: str = None):
         )
     return srv
 
+
 @commerce_controller['Service'].get('filter', response={
-    200:List[ServiceOut],
-    400:MessageOut})
+    200: List[ServiceOut],
+    400: MessageOut})
 def filter_service(request, q: str = None):
     srv = service.objects.all()
     if q:
@@ -147,14 +153,11 @@ def filter_service(request, q: str = None):
     return srv
 
 
-
-
-
 #######################################
 
 
 @commerce_controller['Service_images'].get('Service_image', response={
-    200:List[ImageOut_S], })
+    200: List[ImageOut_S], })
 def list_images(request):
     img = Service_image.objects.all()
     return img
@@ -172,6 +175,7 @@ def create_image(request, payload: Image_S):
 
     return 201, img
 
+
 @commerce_controller['Service_images'].put('Service_image/{id}', response={200: ImageOut_S})
 def update_image(request, id: UUID4, payload: Image_S):
     updateimg = get_object_or_404(Service_image, id=id)
@@ -187,11 +191,12 @@ def delete_Images(request, id: UUID4):
     img.delete()
     return 200, {'detail': 'deleted'}
 
+
 ################################################33
 
 
 @commerce_controller['Center_images'].get('Center_image', response={
-    200:List[ImageOut_C], })
+    200: List[ImageOut_C], })
 def list_images(request):
     img = Center_image.objects.all()
     return img
@@ -210,12 +215,12 @@ def create_image(request, payload: Image_C):
     return 200, img
 
 
-
 @commerce_controller['Center_images'].get('Center_image/{id}', response={
     200: ImageOut_C
 })
 def retrieve_service(request, id):
     return get_object_or_404(Center_image, id=id)
+
 
 @commerce_controller['Center_images'].put('Center_image/{id}', response={200: ImageOut_C})
 def update_image(request, id: UUID4, payload: Image_C):
@@ -276,7 +281,7 @@ def update_center(request, id: UUID4, payload: update_Center):
 def delete_center(request, id: UUID4):
     ctr = get_object_or_404(center, id=id)
     ctr.delete()
-    return 200, {'detail':'deleted'}
+    return 200, {'detail': 'deleted'}
 
 
 """@commerce_controller['Center'].get('search', response={
@@ -289,10 +294,6 @@ def search_centers(request, q: str = None):
             Q(name__icontains=q) | Q(description__icontains=q)
         )
     return ctr"""
-
-
-
-
 
 """@commerce_controller['Center'].get('Searcceh', response={
     200: List[CenterOut],
@@ -343,15 +344,14 @@ def update_ads(request, id: UUID4, payload: update_Advertising):
     for attr, value in payload.dict().items():
         setattr(updateads, attr, value)
     updateads.save()
-    return  updateads
+    return updateads
+
 
 @commerce_controller['Advertising'].delete('Advertising/{id}')
 def delete_ads(request, id: UUID4):
     ads = get_object_or_404(advertising, id=id)
     ads.delete()
     return 200, {'detail': 'deleted'}
-
-
 
 
 #######################################
@@ -399,6 +399,8 @@ def delete_news(request, id: UUID4):
     nws = get_object_or_404(news, id=id)
     nws.delete()
     return 200, {'detail': 'deleted'}
+
+
 ##################################
 
 @commerce_controller['Center_opinions'].get('Center_opinion', response={
@@ -437,6 +439,7 @@ def update_opctr(request, id: UUID4, payload: Center_opinionOUT):
     updateopctr.save()
     return updateopctr
 
+
 @commerce_controller['Center_opinions'].delete('Center_opinion/{id}')
 def delete_opctr(request, id: UUID4):
     opctr = get_object_or_404(CenterOpinion, id=id)
@@ -444,12 +447,12 @@ def delete_opctr(request, id: UUID4):
     return 200, {'detail': 'deleted'}
 
 
-
 @commerce_controller['Center_opinions'].get('Center_opinion/')
 def rate(request, r: float):
-    while r>=0.0 and r<=5.0:
+    while r >= 0.0 and r <= 5.0:
         return {"Rating": r}
-    else: return "rating from 0 to 5"
+    else:
+        return "rating from 0 to 5"
 
 
 ###############################################
@@ -485,7 +488,6 @@ def retrieve_opinion(request, id):
     return get_object_or_404(ServiceOpinion, id=id)
 
 
-
 @commerce_controller['Service_opinions'].put('Service_opinion/{id}', response={200: Service_opinionIn})
 def update_service_opinion(request, id: UUID4, payload: Service_opinionOUT):
     updateopsrv = get_object_or_404(ServiceOpinion, id=id)
@@ -494,6 +496,7 @@ def update_service_opinion(request, id: UUID4, payload: Service_opinionOUT):
     updateopsrv.save()
     return updateopsrv
 
+
 @commerce_controller['Service_opinions'].delete('Service_opinion/{id}')
 def delete_service_opinion(request, id: UUID4):
     opsrv = get_object_or_404(ServiceOpinion, id=id)
@@ -501,15 +504,20 @@ def delete_service_opinion(request, id: UUID4):
     return 200, {'detail': 'deleted'}
 
 
-
-
 @commerce_controller['Service_opinions'].get('Service_opinion/')
 def rate(request, r: float):
-    while r>=0.0 and r<=5.0:
+    while r >= 0.0 and r <= 5.0:
         return {"Rating": r}
-    else: return "rating from 0 to 5"
+    else:
+        return "rating from 0 to 5"
+
 
 ##########################################
+
+
+
+
+
 
 
 
@@ -518,6 +526,7 @@ def rate(request, r: float):
 def list_reservation(request):
     rsv = reservation.objects.all()
     return rsv
+
 
 @commerce_controller['Reservation'].post('reservation', response={
     200: Reservation,
@@ -530,6 +539,7 @@ def create_reservation(request, payload: ReservationOut):
         return 400, {'detail': 'something wrong happened!'}
 
     return 200, rsv
+
 
 @commerce_controller['Reservation'].put('reservation/{id}', response={200: Reservation})
 def update_reservation(request, id: UUID4, payload: ReservationOut):
@@ -549,4 +559,6 @@ def delete_reservation(request, id: UUID4):
 
 
 
+
+# TODO TRYING TO IMPLEMENT BOOKING
 

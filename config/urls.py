@@ -9,6 +9,8 @@ from commerce.controllers import commerce_controller
 
 api = NinjaAPI()
 api.add_router('auth', account_controller)
+
+
 api.add_router('', commerce_controller['notifications'])
 api.add_router('', commerce_controller['Service'])
 api.add_router('', commerce_controller['Center'])

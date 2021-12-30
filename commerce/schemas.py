@@ -98,6 +98,10 @@ class Services(Schema):
     background_image:str
     price: float
     label_id:UUID4
+    latitude: str
+    longitude: str
+    location: str
+    is_feature : bool
 
 
 
@@ -106,10 +110,15 @@ class ServiceOut(Schema):
     label: LabelOut
     background_image: str
     name: str
+    latitude: str
+    longitude: str
+    location: str
     description: str
     time: datetime.time
     Service_images: list[ImageOut_S]
     price: float
+    is_feature : bool
+
     ServiceOpinions: list[Service_opinionOUT]
 
 
@@ -120,6 +129,11 @@ class update_Services(Schema):
     time: datetime.time
     background_image: str
     price: float
+    latitude: str
+    longitude: str
+    location: str
+    is_feature : bool
+
 
 
 ########################################
@@ -164,6 +178,8 @@ class Update_Center_opinion(Schema):
     # rating: float
     description: str
     time: datetime.time
+
+
 
 
 
@@ -218,7 +234,7 @@ class Advertising(Schema):
     title: str
     description: str
     image: str
-    center_id: UUID4
+    # center_id: UUID4
 
 
 
@@ -230,7 +246,7 @@ class AdvertisingOut(Schema):
     title: str
     description: str
     image: str
-    center: CenterOut
+    # center: CenterOut
 
 
 class update_Advertising(Schema):
@@ -313,6 +329,3 @@ class update_Reservation(Schema):
 
 
 ############################
-
-
-
