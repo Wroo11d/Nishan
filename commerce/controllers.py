@@ -528,6 +528,15 @@ def list_reservation(request):
     return rsv
 
 
+
+@commerce_controller['Reservation'].get('/reservation/{users}', response={
+    200: list[update_Reservation]
+})
+def retrieve_reservations(request, users: UUID4):
+    resv = get_object_or_404(reservation, users=users)
+    return resv
+
+
 @commerce_controller['Reservation'].post('reservation', response={
     200: Reservation,
     400: MessageOut
