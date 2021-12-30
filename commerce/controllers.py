@@ -530,6 +530,16 @@ def create_reservation(request, payload: ReservationOut):
         return 400, {'detail': 'something wrong happened!'}
 
     return 200, rsv
+  
+  
+
+@commerce_controller['Reservation'].get('/reservation/{users}', response={
+    200: list[update_Reservation]
+})
+def retrieve_reservations(request, users: UUID4):
+    resv = get_object_or_404(reservation, users=users)
+    return resv
+
 
 @commerce_controller['Reservation'].put('reservation/{id}', response={200: Reservation})
 def update_reservation(request, id: UUID4, payload: ReservationOut):
