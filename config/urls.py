@@ -5,10 +5,11 @@ from django.urls import path
 from ninja import NinjaAPI
 
 from account.controllers import account_controller
-from commerce.controllers import commerce_controller
+from commerce.controllers import commerce_controller,reservation_controller
 
 api = NinjaAPI()
 api.add_router('auth', account_controller)
+api.add_router('Reservation', reservation_controller)
 api.add_router('', commerce_controller['notifications'])
 api.add_router('', commerce_controller['Service'])
 api.add_router('', commerce_controller['Center'])

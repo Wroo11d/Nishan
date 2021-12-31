@@ -10,6 +10,7 @@ class AccountCreate(Schema):
     email: EmailStr
     password1: str = Field(min_length=8)
     password2: str = Field(min_length=8)
+    #image: str
 
 
 
@@ -18,6 +19,7 @@ class AccountOut(Schema):
     first_name: str
     last_name: str
     email: EmailStr
+    #image: str
     phone_number: Optional[str]
     address1: str = None
     address2: str = None
@@ -46,6 +48,7 @@ class AccountUpdate(Schema):
     address2: str
     company_name: str
     company_website: str
+    #image: str
 
 
 class ChangePasswordSchema(Schema):

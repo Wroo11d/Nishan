@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from ninja import Router
+from account.authorization import GlobalAuth
 from pydantic import UUID4
 
 from commerce.models import *
@@ -13,6 +14,7 @@ from config.utils.schemas import MessageOut
 User = get_user_model()
 
 
+reservation_controller = Router(tags=['Reservation'])
 commerce_controller = {'notifications': Router(tags=['notifications']), 'Service': Router(tags=['Service']),
                      'Center': Router(tags=['Center']),'Advertising' : Router(tags=['Advertising']),
                      'Center_images' : Router(tags=['Center_image']),'News' : Router(tags=['News']), 'Service_images' : Router(tags=['Service_image']),
@@ -489,6 +491,9 @@ def delete_service_opinion(request, id: UUID4):
     return 200, {'detail': 'deleted'}
 
 
+"""@commerce_controller['Service_opinions'].post('Service_opinion/')
+def opinion(request, o: str):
+    return {"Opinion": o}"""
 
 
 @commerce_controller['Service_opinions'].get('Service_opinion/')
@@ -501,13 +506,13 @@ def rate(request, r: float):
 
 
 
-@commerce_controller['Reservation'].get('reservation', response={
+@reservation_controller.get('reservation', response={
     200: List[Reservation], })
 def list_reservation(request):
     rsv = reservation.objects.all()
     return rsv
 
-@commerce_controller['Reservation'].post('reservation', response={
+@reservation_controller.post('reservation', response={
     200: Reservation,
     400: MessageOut
 })
@@ -519,7 +524,22 @@ def create_reservation(request, payload: ReservationOut):
 
     return 200, rsv
 
-@commerce_controller['Reservation'].put('reservation/{id}', response={200: Reservation})
+@reservation_controller.get('/list-reservation/', response = {
+    200:List[Reservation]},auth=GlobalAuth())
+def list_reservations(request):
+    user = reservation.objects.filter(user__id=request.auth["pk"])
+    return user
+
+
+"""
+@commerce_controller['Reservation'].get('/reservation/{user}', response={
+    200: List[update_Reservation]
+})
+def get_reservations(request, user: UUID4):
+    resv = get_object_or_404(reservation, user=user)
+    return resv"""
+
+@reservation_controller.put('reservation/{id}', response={200: Reservation})
 def update_reservation(request, id: UUID4, payload: ReservationOut):
     updatersv = get_object_or_404(reservation, id=id)
     for attr, value in payload.dict().items():
@@ -528,7 +548,7 @@ def update_reservation(request, id: UUID4, payload: ReservationOut):
     return updatersv
 
 
-@commerce_controller['Reservation'].delete('reservation/{id}')
+@reservation_controller.delete('reservation/{id}')
 def delete_reservation(request, id: UUID4):
     rsv = get_object_or_404(reservation, id=id)
     rsv.delete()

@@ -54,7 +54,8 @@ class Service_opinionIn(Schema):
     user: OpinionUser
     # rating: float
     description: str
-    time: datetime.time
+    created: datetime.datetime
+    updated: datetime.datetime
 
 
 class Service_opinionOUT(Schema):
@@ -62,14 +63,14 @@ class Service_opinionOUT(Schema):
     user_id: UUID4
     service_id:UUID4
     description: str
-    time: datetime.time
 
 
 class Update_Service_opinion(Schema):
     #user: User
     # rating: float
     description: str
-    time: datetime.time
+    created: datetime.datetime
+    updated: datetime.datetime
 
 
 ########################################
@@ -147,14 +148,16 @@ class Center_opinionIn(Schema):
     # rating: float
     user: OpinionUser
     description: str
-    time: datetime.time
+    #rate:int
+    created: datetime.datetime
+    updated: datetime.datetime
 
 
 class Center_opinionOUT(Schema):
     #id: UUID4
     user_id:UUID4
     description: str
-    time: datetime.time
+    #rate: int
     center_id:UUID4
 
 
@@ -162,7 +165,8 @@ class Update_Center_opinion(Schema):
     #user: User
     # rating: float
     description: str
-    time: datetime.time
+    created: datetime.datetime
+    updated: datetime.datetime
 
 
 

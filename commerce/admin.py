@@ -24,13 +24,15 @@ admin.site.register(advertising)
 admin.site.register(Service_image)
 admin.site.register(Center_image)
 admin.site.register(reservation)
+admin.site.register(ServiceOpinion)
+admin.site.register(CenterOpinion)
 
 
-class Service_opinionAdmin(admin.ModelAdmin):
-    list_display = ('id','description','time')
+"""class Service_opinionAdmin(admin.ModelAdmin):
+    list_display = ('id','description')
 
 class Center_opinionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'description', 'time')
+    list_display = ('id', 'description')
 
 admin.site.register(ServiceOpinion,Center_opinionAdmin)
-admin.site.register(CenterOpinion,Center_opinionAdmin)
+admin.site.register(CenterOpinion,Center_opinionAdmin)"""
