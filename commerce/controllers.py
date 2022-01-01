@@ -491,8 +491,6 @@ def rate(request, r: float):
 
 ##########################################
 
-
-
 @reservation_controller.get('reservation', response={
     200: List[Reservation], })
 def list_reservation(request):

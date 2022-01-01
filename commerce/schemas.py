@@ -182,8 +182,8 @@ class Center(Schema):
     description: str
     location: str
     image: str
-    open_days: datetime.date
-    close_days: datetime.date
+    open_days: str
+    close_days: str
     open_time: datetime.time
     close_time: datetime.time
 
@@ -199,8 +199,8 @@ class CenterOut(Schema):
     image: str
     open_time:  datetime.time
     close_time: datetime.time
-    open_days: datetime.date
-    close_days: datetime.date
+    open_days: str
+    close_days: str
 
 
 class update_Center(Schema):
@@ -210,8 +210,8 @@ class update_Center(Schema):
     image: str
     open_time: datetime.time
     close_time:datetime.time
-    open_days: datetime.date
-    close_days:datetime.date
+    open_days: str
+    close_days: str
 
 
 ##################################################
@@ -302,7 +302,7 @@ class Reservation(Schema):
 
 
 class ReservationOut(Schema):
-    #user_id:UUID4
+    user_id:UUID4
     service_id: UUID4
     title: str
     time: datetime.time

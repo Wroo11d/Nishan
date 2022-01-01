@@ -61,12 +61,12 @@ class Service_image(Entity):
 
 class center(Entity):
     name = models.CharField('name',null=True, blank=True, max_length=255)
-    open_days = models.DateField('open_days', auto_now = False, auto_now_add = False,null=True, blank=True, max_length=255)
-    close_days = models.DateField('close_days', auto_now = False, auto_now_add = False,null=True, blank=True, max_length=255)
+    open_days = models.TextField('open_days', blank=True, null=True)
+    close_days = models.TextField('close_days', blank=True, null=True)
     open_time = models.TimeField('open_time',auto_now = False, auto_now_add = False,null=True, blank=True)
     close_time = models.TimeField('close_time',auto_now = False, auto_now_add = False,null=True, blank=True)
     description= models.TextField('description', blank=True, null=True)
-    location = models.CharField('location',null=True, blank=True, max_length=255)
+    location = models.TextField('location',null=True, blank=True)
     image = models.ImageField('image', upload_to='centers/')
 
     def save(self, force_insert=False, force_update=False, using=None,
@@ -139,13 +139,12 @@ class CenterOpinion(Entity):
 class reservation(Entity):
     user = models.ForeignKey(User, verbose_name='user', related_name='reservations', on_delete=models.CASCADE)
     service = models.ForeignKey('service', related_name='reservations', on_delete=models.CASCADE)
-    title = models.CharField('name',null=True, blank=True, max_length=255)
+    title = models.CharField('title',null=True, blank=True, max_length=255)
     time = models.TimeField('time',auto_now = False, auto_now_add = False,null=True, blank=True)
-    #created =  models.DateTimeField(editable=False, auto_now_add=True)
     is_active = models.BooleanField('is active')
 
-    def __str__(self):
-        return str(self.title)
+    """def __str__(self):
+        return str(self.title)"""
 
 
 class Label(Entity):
