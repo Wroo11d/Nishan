@@ -124,16 +124,18 @@ def delete_service(request, id: UUID4):
     return 200, {'detail': 'deleted'}
 
 
-@commerce_controller['Service'].get('search', response={
+@commerce_controller['Service'].get('look', response={
     200:List[ServiceOut],
     400:MessageOut})
-def search_services(request, q: str = None):
+def look_services(request, q: str = None):
+
     srv = service.objects.all()
     if q:
         srv = srv.filter(
             Q(name__icontains=q) | Q(description__icontains=q)
 
         )
+
     return srv
 
 
@@ -269,32 +271,17 @@ def delete_center(request, id: UUID4):
     return 200, {'detail':'deleted'}
 
 
-"""@commerce_controller['Center'].get('search', response={
-    200: List[CenterOut], })
+@commerce_controller['Center'].get('search', response={
+    200:List[CenterOut],
+    400:MessageOut})
 def search_centers(request, q: str = None):
-    ctr = center.objects.all()
-
+    ctr =center.objects.all()
     if q:
-        ctr=ctr.filter(
+        ctr = ctr.filter(
             Q(name__icontains=q) | Q(description__icontains=q)
+
         )
-    return ctr"""
-
-
-
-
-
-"""@commerce_controller['Center'].get('Searcceh', response={
-    200: List[CenterOut],
-})
-def search_center(request, q: str = None,):
-    center = center.objects.all()
-
-    if q:
-        center = center.filter(
-            Q(nameicontains=q) | Q(descriptionicontains=q)
-        )
-"""
+    return ctr
 
 
 ####################################################
@@ -525,7 +512,7 @@ def create_reservation(request, payload: ReservationOut):
     return 200, rsv
 
 @reservation_controller.get('/list-reservation/', response = {
-    200:List[Reservation]},auth=GlobalAuth())
+    200:List[Reservation]}, auth=GlobalAuth())
 def list_reservations(request):
     user = reservation.objects.filter(user__id=request.auth["pk"])
     return user

@@ -296,15 +296,17 @@ class Reservation(Schema):
     service: ServiceOut
     title: str
     time: datetime.time
+    #created: datetime.datetime
     is_active: bool
 
 
 
 class ReservationOut(Schema):
-    user_id:UUID4
+    #user_id:UUID4
     service_id: UUID4
     title: str
     time: datetime.time
+   #created: datetime.datetime
     is_active: bool
 
 
@@ -312,8 +314,8 @@ class ReservationOut(Schema):
 class update_Reservation(Schema):
     title: str
     time: datetime.time
+    #created: datetime.datetime
     is_active: bool
-
 
 ############################
 

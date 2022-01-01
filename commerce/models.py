@@ -141,10 +141,11 @@ class reservation(Entity):
     service = models.ForeignKey('service', related_name='reservations', on_delete=models.CASCADE)
     title = models.CharField('name',null=True, blank=True, max_length=255)
     time = models.TimeField('time',auto_now = False, auto_now_add = False,null=True, blank=True)
+    #created =  models.DateTimeField(editable=False, auto_now_add=True)
     is_active = models.BooleanField('is active')
 
     def __str__(self):
-        return str(self.user_id)
+        return str(self.title)
 
 
 class Label(Entity):
