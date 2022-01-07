@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 User=get_user_model()
 
 
+
 class CategoryOut(Schema):
     id: UUID4
     name: str
@@ -41,21 +42,27 @@ class notificationsOut(Schema):
     image: str
     time: datetime.time
 
-    ###########################################
+############################################
+
+class OpinionUser(Schema):
+    id:UUID4
+    email:str
+
 
 class Service_opinionIn(Schema):
-    id: UUID4
-    # rating: float
+    # id: UUID4
+    user: OpinionUser
+    rating: float
     description: str
-    #User.username
     time: datetime.time
 
 
 class Service_opinionOUT(Schema):
-    id: UUID4
-    # rating: float
+    id :UUID4
+    rating: float
+    user_id: UUID4
+    service_id:UUID4
     description: str
-    #User.username
     time: datetime.time
 
 
@@ -70,9 +77,8 @@ class Update_Service_opinion(Schema):
 
 
 class Image_S(Schema):
-
-    id:UUID4
     image:str
+    service_id:UUID4
 
 
 class ImageOut_S(Schema):
@@ -85,48 +91,63 @@ class update_Images_S(Schema):
 
 #########################################
 class Services(Schema):
-    id: UUID4
+    #id: UUID4
     name: str
     description: str
     time: datetime.time
-    service_image:str
+    background_image:str
     price: float
     label_id:UUID4
+    latitude: str
+    longitude: str
+    location: str
+    is_feature : bool
 
 
 
 class ServiceOut(Schema):
     id: UUID4
+    label: LabelOut
+    background_image: str
     name: str
+    latitude: str
+    longitude: str
+    location: str
     description: str
     time: datetime.time
-    Service_images:list[ImageOut_S]
-    ServiceOpinions:list[Service_opinionOUT]
-    background_image:str
+    Service_images: list[ImageOut_S]
     price: float
-    label: LabelOut
+    is_feature : bool
+
+    ServiceOpinions: list[Service_opinionOUT]
 
 
 class update_Services(Schema):
-    id: UUID4
+    #id: UUID4
     name: str
     description: str
     time: datetime.time
-    service_image: str
+    background_image: str
     price: float
+    latitude: str
+    longitude: str
+    location: str
+    is_feature : bool
+
 
 
 ########################################
 
 
 class Image_C(Schema):
-    id:UUID4
     image:str
+    center_id:UUID4
 
 
 class ImageOut_C(Schema):
-    id: UUID4
+    id:UUID4
     image:str
+
 
 class update_Images_C(Schema):
     image:str
@@ -139,15 +160,17 @@ class update_Images_C(Schema):
 class Center_opinionIn(Schema):
     id: UUID4
     # rating: float
+    user: OpinionUser
     description: str
     time: datetime.time
 
 
 class Center_opinionOUT(Schema):
-    id: UUID4
-    # rating: float
+    #id: UUID4
+    user_id:UUID4
     description: str
     time: datetime.time
+    center_id:UUID4
 
 
 class Update_Center_opinion(Schema):
@@ -162,10 +185,12 @@ class Update_Center_opinion(Schema):
 
 
 
+
+
 ###################################
 
 class Center(Schema):
-    id: UUID4
+    #id: UUID4
     name: str
     description: str
     location: str
@@ -176,9 +201,6 @@ class Center(Schema):
     close_time: datetime.time
 
 
-
-
-
 class CenterOut(Schema):
     id: UUID4
     name: str
@@ -186,7 +208,7 @@ class CenterOut(Schema):
     location: str
     services: list[ServiceOut]
     Center_images: list[ImageOut_C]
-    CenterOpinions:list[Center_opinionOUT]
+    CenterOpinions:list[Center_opinionIn]
     image: str
     open_time:  datetime.time
     close_time: datetime.time
@@ -208,31 +230,36 @@ class update_Center(Schema):
 ##################################################
 
 class Advertising(Schema):
-    id: UUID4
-    name: str
+    #id: UUID4
+    title: str
     description: str
-    center:CenterOut
+    image: str
+    # center_id: UUID4
+
+
 
 
 
 
 class AdvertisingOut(Schema):
     id: UUID4
-    name: str
+    title: str
     description: str
     image: str
+    # center: CenterOut
 
 
 class update_Advertising(Schema):
-    name: str
-    description: str
     image: str
-    center_id: UUID4
+    title: str
+    description: str
+
 
 
 ####################################
 class News(Schema):
     id: UUID4
+    image: str
     title: str
     description: str
     # time: str
@@ -240,9 +267,10 @@ class News(Schema):
 
 class NewsOut(Schema):
     id: UUID4
+    image: str
     title: str
     description: str
-    image: str
+
     # time: str
 
 
@@ -253,7 +281,27 @@ class update_News(Schema):
 
 
 
-############################3
+############################
+
+"""
+class Center_opinionIn(Schema):
+    id: UUID4
+    # rating: float
+    user: OpinionUser
+    description: str
+    time: datetime.time
+
+
+class Center_opinionOUT(Schema):
+    #id: UUID4
+    user_id:UUID4
+    description: str
+    time: datetime.time
+    center_id:UUID4"""
+
+
+
+
 
 class Reservation(Schema):
     id: UUID4
@@ -264,6 +312,7 @@ class Reservation(Schema):
 
 
 class ReservationOut(Schema):
+    #users:UUID4
     id: UUID4
     title: str
     time: datetime.time
@@ -272,56 +321,10 @@ class ReservationOut(Schema):
 
 
 class update_Reservation(Schema):
+    users:UUID4
     title: str
     time: datetime.time
     is_active: bool
 
 
 ############################
-
-
-class MerchantOut(Schema):
-    id: UUID4
-    name: str
-    created: str
-    updated: str
-
-class VendorOut(Schema):
-    id: UUID4
-    name: str
-    image: str
-
-
-class ProductOut(Schema):
-    id: UUID4
-    is_featured: bool
-    name: str
-    description: str
-    qty: int
-    price: int
-    discounted_price: int
-    category: CategoryOut
-    vendor: VendorOut
-    merchant: MerchantOut
-    label: LabelOut
-    created: str
-    updated: str
-
-class ProductCreate(Schema):
-    is_featured: bool
-    name: str
-    description: str
-    qty: int
-    cost: int
-    price: int
-    discounted_price: int
-    category_id: UUID4
-    vendor_id: UUID4
-    merchant_id: UUID4
-    label_id: UUID4
-
-
-class AddToCartPayload(Schema):
-    product_id: UUID4
-    qty: int
-

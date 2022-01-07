@@ -14,7 +14,11 @@ SECRET_KEY = 'django-insecure-2my1#w#z6%2k@&u6u&p5$rl#_ff-666o-4u#nf7o09%hal2^zh
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '10.0.2.2',
+    '127.0.0.1',
+    'noaman.pythonanywhere.com'
+]
 
 # Application definition
 
@@ -101,7 +105,31 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+JAZZMIN_SETTINGS={
+    # title of the window (Will default to current_admin_site.site_title if absent or None)
+    "site_title": "Nishan Admin",
 
+    # Title on the login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
+    "site_header": "Nishan",
+
+    # Title on the brand (19 chars max) (defaults to current_admin_site.site_header if absent or None)
+    "site_brand": "Nishan",
+    # Links to put along the top menu
+    "topmenu_links": [
+
+        # Url that gets reversed (Permissions can be added)
+        {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
+
+        # external url that opens in a new window (Permissions can be added)
+        {"name": "Support", "url": "https://computiq.tech", "new_window": True},
+
+        # # model admin to link to (Permissions checked against model)
+        # {"model": "auth.User"},
+        #
+        # # App with dropdown menu to all its models pages (Permissions checked against models)
+        # {"app": "books"},
+    ],
+}
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
