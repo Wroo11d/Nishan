@@ -8,8 +8,8 @@ class AccountCreate(Schema):
     first_name: str = Field(min_length=2)
     last_name: str = Field(min_length=2)
     email: EmailStr
-    password1: str = Field(min_length=8)
-    password2: str = Field(min_length=8)
+    password: str = Field(min_length=8)
+    # password2: str = Field(min_length=8)
 
 
 
@@ -50,5 +50,5 @@ class AccountUpdate(Schema):
 
 class ChangePasswordSchema(Schema):
     old_password: str
-    new_password1: str
-    new_password2: str
+    new_password: str
+    # new_password2: str

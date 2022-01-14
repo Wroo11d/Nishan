@@ -1,10 +1,6 @@
 from django.contrib import admin
 
-from commerce.models import (
-
-    Label,  service,center,notification,advertising, Center_image,Service_image,ServiceOpinion,CenterOpinion,reservation,
-
-)
+from commerce.models import *
 """class InlineProductImage(admin.TabularInline):
     model = ProductImage"""
 
@@ -34,4 +30,5 @@ class Center_opinionAdmin(admin.ModelAdmin):
     list_display = ('id', 'description', 'time')
 
 admin.site.register(ServiceOpinion,Center_opinionAdmin)
+admin.site.register(Favorites)
 admin.site.register(CenterOpinion,Center_opinionAdmin)

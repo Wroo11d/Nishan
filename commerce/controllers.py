@@ -14,14 +14,19 @@ User = get_user_model()
 
 commerce_controller = {
 
-    'notifications': Router(tags=['notifications']), 'Service': Router(tags=['Service']),
+    'notifications': Router(tags=['notifications']),
+    'Service': Router(tags=['Service']),
 
 
-    'Center': Router(tags=['Center']), 'Advertising': Router(tags=['Advertising']),
-    'Center_images': Router(tags=['Center_image']), 'News': Router(tags=['News']),
+    'Center': Router(tags=['Center']),
+    'Advertising': Router(tags=['Advertising']),
+    'Center_images': Router(tags=['Center_image']),
+    'News': Router(tags=['News']),
     'Service_images': Router(tags=['Service_image']),
-    'Center_opinions': Router(tags=['Center_opinion']), 'Service_opinions': Router(tags=['Service_opinion']),
+    'Center_opinions': Router(tags=['Center_opinion']),
+    'Service_opinions': Router(tags=['Service_opinion']),
     'Reservation': Router(tags=['Reservation']),
+    'favorites': Router(tags=['favorites']),
 }
 
 
@@ -528,7 +533,7 @@ def list_reservation(request):
     return rsv
 
 
-@commerce_controller['Reservation'].post('reservation', response={
+@commerce_controller['Reservation'].post('reservation/create', response={
     200: Reservation,
     400: MessageOut
 })
@@ -561,4 +566,42 @@ def delete_reservation(request, id: UUID4):
 
 
 # TODO TRYING TO IMPLEMENT BOOKING
+
+
+
+@commerce_controller['favorites'].get('favorites', response={
+    200: List[FavList], })
+def list_fav(request):
+    rsv = Favorites.objects.all()
+    return rsv
+
+
+@commerce_controller['favorites'].post('favorites/create', response={
+    200: FavCreate,
+    400: MessageOut
+})
+def create_fav(request, payload: UpdateFav):
+    try:
+        rsv = Favorites.objects.create(**payload.dict(), )
+    except:
+        return 400, {'detail': 'something wrong happened!'}
+
+    return 200, rsv
+
+
+@commerce_controller['favorites'].put('favorites/{id}', response={200: FavList})
+def update_fav(request, id: UUID4, payload: UpdateFav):
+    updatersv = get_object_or_404(Favorites, id=id)
+    for attr, value in payload.dict().items():
+        setattr(updatersv, attr, value)
+    updatersv.save()
+    return updatersv
+
+
+@commerce_controller['favorites'].delete('favorites/{id}')
+def delete_fav(request, id: UUID4):
+    rsv = get_object_or_404(Favorites, id=id)
+    rsv.delete()
+    return 200, {'detail': 'deleted'}
+
 

@@ -21,6 +21,7 @@ api.add_router('', commerce_controller['Center_opinions'])
 api.add_router('', commerce_controller['Reservation'])
 api.add_router('', commerce_controller['Service_images'])
 api.add_router('', commerce_controller['Center_images'])
+api.add_router('', commerce_controller['favorites'])
 
 
 urlpatterns = [

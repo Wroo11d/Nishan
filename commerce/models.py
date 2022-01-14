@@ -70,7 +70,12 @@ class center(Entity):
     open_time = models.TimeField('open_time',auto_now = False, auto_now_add = False,null=True, blank=True)
     close_time = models.TimeField('close_time',auto_now = False, auto_now_add = False,null=True, blank=True)
     description= models.TextField('description', blank=True, null=True)
-    location = models.CharField('location',null=True, blank=True, max_length=255)
+    # location = models.CharField('location',null=True, blank=True, max_length=255)
+    latitude = models.CharField('latitude', max_length=255)
+    longitude = models.CharField('longitude', max_length=255)
+    location = models.CharField('location', max_length=255)
+    is_feature = models.BooleanField('is feature')
+
     image = models.ImageField('image', upload_to='centers/')
 
     def save(self, force_insert=False, force_update=False, using=None,
@@ -103,6 +108,7 @@ class Center_image(Entity):
 
 class advertising(Entity):
     title = models.CharField('title',null=True, blank=True, max_length=255)
+    url = models.CharField('url',null=True, blank=True, max_length=255)
     description = models.TextField('description',  blank=True, null=True)
     # center = models.ForeignKey('center', related_name='advertisings', on_delete=models.CASCADE)
     image = models.ImageField('image', upload_to='advertisings/')
@@ -131,6 +137,7 @@ class ServiceOpinion(Entity):
 
 class CenterOpinion(Entity):
     user = models.ForeignKey(User, verbose_name='user', related_name='CenterOpinions', on_delete=models.CASCADE)
+    rating = models.DecimalField('rating',max_digits=1, decimal_places=0)
 
     description = models.TextField('description',  blank=True, null=True)
     center = models.ForeignKey('center', related_name='CenterOpinions', on_delete=models.CASCADE)
@@ -161,3 +168,6 @@ class Label(Entity):
         return self.name
 
 
+class Favorites(Entity):
+    user = models.ForeignKey(User, verbose_name='user', related_name='Favorites', on_delete=models.CASCADE)
+    service = models.ForeignKey('service', related_name='Favorites', on_delete=models.CASCADE)
